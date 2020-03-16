@@ -1,0 +1,37 @@
+<div id="features" class="features-section">
+
+    <div class="features-container row">
+
+        <h2 class="features-headline light">Think Exam</h2>
+
+        <div class="col-sm-4 feature">
+
+            <div class="feature-icon feature-no-display feature-display">
+                <img class="feature-img" src="assets/images/icons8-time-limit-64.png">
+            </div>
+            <h5 class="feature-head-text feature-no-display feature-display"> TIME SAVING </h5>
+            <p class="feature-subtext light feature-no-display feature-display"> This Software also helps
+		in saving time between the Exams and Results.Through this software the you can find his/her
+		report card just after completing the exam.</p>
+        </div>
+
+        <div class="col-sm-4 feature">
+            <div class="feature-icon feature-no-display feature-display-mid feature-display">
+                <img class="feature-img" src="assets/images/icons8-future-64.png">
+            </div>
+            <h5 class="feature-head-text feature-no-display feature-display-mid feature-display"> A Time Limit for Paper </h5>
+            <p class="feature-subtext light feature-no-display feature-display-mid feature-display">Has a facility of restricting each paper
+		to a given amount of Time.A timer is also displayed on the screen through this type of management all student will be getting
+		equal time which was decided by administrator for that particular paper.</p>
+        </div>
+
+        <div class="col-sm-4 feature">
+            <div class="feature-icon feature-no-display feature-display-last feature-display">
+                <img class="bullet-img" src="assets/images/design.svg">
+            </div>
+            <h5 class="feature-head-text feature-no-display feature-display-last feature-display">Track Progress </h5>
+            <p class="feature-subtext light feature-no-display feature-display-last feature-display"> Track the progress through the exams.</p>
+	</div>
+	::after
+	</div>
+	</div>	
