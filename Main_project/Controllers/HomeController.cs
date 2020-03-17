@@ -11,21 +11,13 @@ namespace Main_project.Controllers
     public class HomeController : Controller
     {
         DBQUIZ1Entities db = new DBQUIZ1Entities();
-        public ActionResult Index()
-        {
-            if (Session["ad_id"] != null)
-            {
-                return RedirectToAction("Dashboard");
-            }
-            return View();
-
-        }
         [HttpGet]
         public ActionResult sregister()
         {
+
+
             return View();
         }
-
 
         [HttpPost]
         public ActionResult sregister(TBL_STUDENT svw, HttpPostedFileBase imgfile)
@@ -89,11 +81,25 @@ namespace Main_project.Controllers
 
             return path;
         }
+
+
         [HttpGet]
+        public ActionResult Logout()
+        {
+            Session.Abandon();
+            Session.RemoveAll();
+            return RedirectToAction("Index");
+
+
+        }
         public ActionResult tlogin()
         {
+
+
             return View();
         }
+
+
 
         [HttpPost]
         public ActionResult tlogin(TBL_ADMIN a)
@@ -111,22 +117,132 @@ namespace Main_project.Controllers
 
             return View();
         }
-
         public ActionResult slogin()
         {
             return View();
         }
 
-        public ActionResult Dashboard()
+
+        [HttpPost]
+        public ActionResult slogin(TBL_STUDENT s)
         {
+
+            TBL_STUDENT std = db.TBL_STUDENT.Where(x => x.S_NAME == s.S_NAME && x.S_PASSWORD == s.S_PASSWORD).SingleOrDefault();
+            if (std == null)
+            {
+                ViewBag.msg = "Invalid Email or Password";
+            }
+            else
+            {
+                Session["std_id"] = std.S_ID;
+                return RedirectToAction("StudentExam");
+            }
             return View();
         }
 
+        public ActionResult StudentExam()
+        {
+
+            if (Session["std_id"] == null)
+            {
+                return RedirectToAction("slogin");
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult StudentExam(string room)
+        {
+            List<tbl_categroy> list = db.tbl_categroy.ToList();
+
+            foreach (var item in list)
+            {
+                if (item.cat_encryptedstring == room)
+                {
+
+                    TempData["exampid"] = item.cat_id;
+                    TempData.Keep();
+                    return RedirectToAction("QuizStart");
+
+                }
+                else
+                {
+                    ViewBag.error = "No Room Found......";
+                }
+            }
+
+
+            return View();
+        }
+
+        public ActionResult QuizStart()
+        {
+
+            if (TempData["i"] == null)
+            {
+                TempData["i"] = 1;
+            }
+            if (Session["std_id"] == null)
+            {
+                return RedirectToAction("slogin");
+            }
+
+            try
+            {
+                TBL_QUESTIONS q = null;
+                int examid = Convert.ToInt32(TempData["exampid"].ToString());
+                if (TempData["qid"] == null)
+                {
+
+                    q = db.TBL_QUESTIONS.First(x => x.q_fk_catid == examid);
+                    var list = db.TBL_QUESTIONS.Skip(Convert.ToInt32(TempData["i"].ToString()));
+                    int qid = list.First().QUESTION_ID;
+                    TempData["qid"] = qid;
+                }
+                else
+                {
+                    int qid = Convert.ToInt32(TempData["qid"].ToString());
+                    q = db.TBL_QUESTIONS.Where(x => x.QUESTION_ID == qid && x.q_fk_catid == examid).SingleOrDefault();
+
+                    var list = db.TBL_QUESTIONS.Skip(Convert.ToInt32(TempData["i"].ToString()));
+                    qid = list.First().QUESTION_ID;
+                    TempData["qid"] = qid;
+                    TempData["i"] = Convert.ToInt32(TempData["i"].ToString()) + 1;
+                }
+                TempData.Keep();
+                return View(q);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("StudentExam");
+
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult QuizStart(TBL_QUESTIONS q)
+        {
+            return RedirectToAction("QuizStart");
+        }
+        public ActionResult Dashboard()
+        {
+            if (Session["ad_id"] == null)
+            {
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
 
         [HttpGet]
         public ActionResult Addcategory()
         {
-           // Session["ad_id"] = 2; //we will remove it soon.......
+            if (Session["ad_id"] == null)
+            {
+                return RedirectToAction("Index");
+            }
+            // Session["ad_id"] = 2; //we will remove it soon.......
             int adid = Convert.ToInt32(Session["ad_id"].ToString());
             List<tbl_categroy> li = db.tbl_categroy.Where(x => x.cat_fk_adid == adid).OrderByDescending(x => x.cat_id).ToList();
             ViewData["list"] = li;
@@ -140,18 +256,24 @@ namespace Main_project.Controllers
             List<tbl_categroy> li = db.tbl_categroy.OrderByDescending(x => x.cat_id).ToList();
             ViewData["list"] = li;
 
+            Random r = new Random();
             tbl_categroy c = new tbl_categroy();
             c.cat_name = cat.cat_name;
+            c.cat_encryptedstring = crypto.Encrypt(cat.cat_name.Trim() + r.Next().ToString(), true);
             c.cat_fk_adid = Convert.ToInt32(Session["ad_id"].ToString());
             db.tbl_categroy.Add(c);
             db.SaveChanges();
+
+
+
+
             return RedirectToAction("Addcategory");
         }
 
 
         [HttpGet]
 
-        public ActionResult Addquestions()
+        public ActionResult Addquestion()
         {
             int sid = Convert.ToInt32(Session["ad_id"]);
             List<tbl_categroy> li = db.tbl_categroy.Where(x => x.cat_fk_adid == sid).ToList();
@@ -184,11 +306,18 @@ namespace Main_project.Controllers
             db.SaveChanges();
             TempData["msg"] = "Question added successfully....";
             TempData.Keep();
-            return RedirectToAction("Addquestion");
+            return RedirectToAction("Addquestions");
+
 
         }
-
-
+        public ActionResult Index()
+        {
+            if (Session["ad_id"] != null)
+            {
+                return RedirectToAction("Dashboard");
+            }
+            return View();
+        }
 
         public ActionResult About()
         {

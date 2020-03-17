@@ -154,6 +154,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\crypto.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -253,6 +254,8 @@
     <Content Include="Views\Shared\_Layout2.cshtml" />
     <Content Include="Views\Home\Logout.cshtml" />
     <Content Include="Views\Home\sregister.cshtml" />
+    <Content Include="Views\Home\StudentExam.cshtml" />
+    <Content Include="Views\Home\QuizStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

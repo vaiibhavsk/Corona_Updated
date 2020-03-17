@@ -14,26 +14,21 @@
 
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
 
-    <style>
-        body {
-            background-image: url('../../Content/img/c4800a85ad46a8510111e07603fd954a.jpg');
-            background-size: cover;
-        }
-    </style>
+    
 </head>
 <body>
 
-    @if (ViewBag.msg != null)
+    @*@if (ViewBag.msg != null)
     {
         <div class="alert alert-danger">
             <strong>Error!</strong> @ViewBag.msg
         </div>
 
 
-    }
+    }*@
 
 
-    <h2 style="text-align:center;background-color:#ffffff;font-family:'Adobe Garamond Pro';margin:0 auto">Student Registration</h2>
+    <h2 style="text-align:center; list-style-position:outside; font-size:22px;padding:20px 20px;height:40px; line-height:21px; background-color:#df691a;font-family:Arial, Helvetica, sans-serif;margin:auto">Student Registration</h2>
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-8  col-md-8 col-sm-8">
@@ -64,7 +59,7 @@
                         </div>
 
                         <input type="submit" value="Register Now!" class="btn btn-warning btn-block" />
-
+                        <p style="color:red">@ViewBag.msg</p>
 
                     }
 

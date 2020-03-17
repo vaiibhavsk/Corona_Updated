@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DBQUIZ1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DBQUIZ1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="TBL_ADMIN">
           <Key>
             <PropertyRef Name="AD_ID" />
@@ -20,6 +20,7 @@
           <Property Name="cat_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="cat_name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="cat_fk_adid" Type="int" />
+          <Property Name="cat_encryptedstring" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="TBL_QUESTIONS">
           <Key>
@@ -108,8 +109,7 @@
             <End Role="TBL_SETEXAM" EntitySet="TBL_SETEXAM" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DBQUIZ1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -131,6 +131,7 @@
           <Property Name="cat_fk_adid" Type="Int32" />
           <NavigationProperty Name="TBL_ADMIN" Relationship="Self.FK__tbl_categ__cat_f__1ED998B2" FromRole="tbl_categroy" ToRole="TBL_ADMIN" />
           <NavigationProperty Name="TBL_QUESTIONS" Relationship="Self.FK__TBL_QUEST__q_fk___1FCDBCEB" FromRole="tbl_categroy" ToRole="TBL_QUESTIONS" />
+          <Property Name="cat_encryptedstring" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TBL_QUESTIONS">
           <Key>
@@ -240,6 +241,7 @@
           <EntitySetMapping Name="tbl_categroy">
             <EntityTypeMapping TypeName="DBQUIZ1Model.tbl_categroy">
               <MappingFragment StoreEntitySet="tbl_categroy">
+                <ScalarProperty Name="cat_encryptedstring" ColumnName="cat_encryptedstring" />
                 <ScalarProperty Name="cat_id" ColumnName="cat_id" />
                 <ScalarProperty Name="cat_name" ColumnName="cat_name" />
                 <ScalarProperty Name="cat_fk_adid" ColumnName="cat_fk_adid" />
